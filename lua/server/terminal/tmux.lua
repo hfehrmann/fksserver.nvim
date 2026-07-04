@@ -10,6 +10,12 @@ function Tmux:new(paneId)
 end
 
 function Tmux:focus()
+    local hostingTerminal = require("server.terminal.hostingTerminal")
+    local terminal = hostingTerminal.get("tmux")
+    if terminal then
+        terminal:focus()
+    end
+
     local window_script = string.format(
         [[
         tmux list-panes -a -F '#D:#I' | grep '%s' | sed 's|.*:||'
@@ -28,7 +34,7 @@ function Tmux:focus()
     vim.fn.system(focus_script)
 end
 
-function Tmux.setup()
+function Tmux.setupIfAvailable()
     local paneId = vim.env.TMUX_PANE
 
     if paneId then

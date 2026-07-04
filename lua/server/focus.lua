@@ -6,7 +6,7 @@ local M = {
 -- Identifies what environment the nvim instance is running on,
 -- so it can select the focus strategy
 -- Supported platforms:
---   - MacOS (uses apple script for focus)
+--   - MacOS (uses apple script for focus
 --     - iTerm2
 function M.setup()
     local has = vim.fn.has
@@ -15,16 +15,11 @@ function M.setup()
         return
     end
 
-    M.enabled = true
+    local terminalModule = require("server.terminal")
+    local terminal = terminalModule.setup()
 
-    local iTermSessionId = vim.env.ITERM_SESSION_ID or ""
-    if iTermSessionId ~= "" then
-        local iTerm = require("server.terminal.iTerm")
-        iTerm.setup(M, iTermSessionId)
-        return
-    end
-
-    M.enabled = false
+    M.terminal = terminal
+    M.enabled = terminal ~= nil
 end
 
 function M.focus()
