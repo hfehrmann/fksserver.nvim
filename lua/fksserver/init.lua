@@ -21,6 +21,7 @@ end
 
 function register_cmd()
     local focus = require("fksserver.focus")
+    local fksnv = require("fksserver.fksnv")
     local sock = M.opts.socket
 
     vim.api.nvim_create_user_command(
@@ -35,6 +36,7 @@ function register_cmd()
                     "serverstart",
                     { sock }
                 )
+                fksnv.check()
                 io.stderr:write("\27]0;Main nvim\007")
             end, 500)
         end,
@@ -71,6 +73,13 @@ function register_cmd()
             vim.cmd("edit " .. file)
         end,
         { nargs = 1 }
+    )
+    vim.api.nvim_create_user_command(
+        "FKSInstall",
+        function(opts)
+            fksnv.install()
+        end,
+        {}
     )
 end
 
