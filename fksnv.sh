@@ -1,23 +1,33 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
+
+VERSION="0.1.0"
 
 usage() {
     echo "Open and focus files in the nvim instance that is running the fks server"
     echo ""
-    echo "Usage: fkns [-o] file [...]"
+    echo "Usage: fksnv [-o] file [...]"
     echo "Options:"
     echo "  -o    Only open the file, no focus."
     exit 0
 }
 
+version() {
+    echo "Fokus nvim server (fksnv) $VERSION"
+    exit 0
+}
+
 FOCUS=":FKSFocusMe<CR>"
 
-while getopts "oh" opt; do
+while getopts "ohv" opt; do
     case $opt in
         o)
             FOCUS=""
             ;;
         h)
             usage
+            ;;
+        v)
+            version
             ;;
     esac
 done
