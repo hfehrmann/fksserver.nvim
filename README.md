@@ -1,6 +1,14 @@
 # Fokus Server (fksserver)
 
-## tmux setup
+
+## fksnv script
+
+The script sends the open and focus command to the server to the socket.
+If there is a server running, it executes those commands
+
+## Configuration
+
+### tmux setup
 
 tmux has a snapshot of the env variables where the the tmux server started.
 If a new session starts in a new terminal, it inherits the env variables

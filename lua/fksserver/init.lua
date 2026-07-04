@@ -56,6 +56,20 @@ function register_cmd()
         end,
         {}
     )
+    vim.api.nvim_create_user_command(
+        "FKSOpen",
+        function(opts)
+            local file = vim.fn.fnamemodify(opts.args, ":p")
+            local pwd = vim.fn.getcwd() .. "/"
+
+            if file:sub(1, #pwd) == pwd then
+                file = file:sub(#pwd + 1)
+            end
+
+            vim.cmd("edit " .. file)
+        end,
+        { nargs = 1 }
+    )
 end
 
 return M
