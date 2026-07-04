@@ -2,6 +2,9 @@
 local M = {}
 
 function M.setup(opts)
+    local focus = require('server.focus')
+    focus.setup()
+
     local default_opts = {
         socket_name = "nvim_server",
     }
@@ -35,6 +38,14 @@ function M.setup(opts)
                 { sock }
             )
             io.stderr:write("\27]0;nvim\007")
+        end,
+        {}
+    )
+
+    vim.api.nvim_create_user_command(
+        "ServerFocusMe",
+        function()
+            focus.focus()
         end,
         {}
     )
