@@ -12,19 +12,26 @@ end
 function iTerm:focus()
     local script = string.format(
         [[
-        tell application "iTerm2"
+        tell application "iTerm"
+            set targetSessionId to "%s"
             repeat with w in windows
-                set tabIndex to 0
                 repeat with t in tabs of w
-                    set tabIndex to tabIndex + 1
-                    repeat with ses in sessions of t
-                        if (id of ses) is "%s" then
-                            activate
-                            select tab tabIndex of w
-                            select ses
-                            return
+                    set idList to id of sessions of t
+                    set matchIndex to 0
+                    repeat with i from 1 to count of idList
+                        if item i of idList is targetSessionId then
+                            set matchIndex to i
+                            exit repeat
                         end if
                     end repeat
+
+                    if matchIndex > 0 then
+                        select t
+                        select w
+                        select (item matchIndex of (sessions of t))
+                        activate
+                        return
+                    end if
                 end repeat
             end repeat
         end tell

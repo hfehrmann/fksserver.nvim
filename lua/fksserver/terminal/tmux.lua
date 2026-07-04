@@ -10,11 +10,6 @@ function Tmux:new(paneId)
 end
 
 function Tmux:focus()
-    local hostingTerminal = require("fksserver.terminal.hostingTerminal")
-    local terminal = hostingTerminal.get("tmux")
-    if terminal then
-        terminal:focus()
-    end
 
     local window_script = string.format(
         [[
@@ -32,6 +27,12 @@ function Tmux:focus()
         self.paneId
     )
     vim.fn.system(focus_script)
+
+    local hostingTerminal = require("fksserver.terminal.hostingTerminal")
+    local terminal = hostingTerminal.get("tmux")
+    if terminal then
+        terminal:focus()
+    end
 end
 
 function Tmux.setupIfAvailable()
