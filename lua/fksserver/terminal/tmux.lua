@@ -10,7 +10,7 @@ function Tmux:new(paneId)
 end
 
 function Tmux:focus()
-    local hostingTerminal = require("server.terminal.hostingTerminal")
+    local hostingTerminal = require("fksserver.terminal.hostingTerminal")
     local terminal = hostingTerminal.get("tmux")
     if terminal then
         terminal:focus()

@@ -2,7 +2,7 @@
 local M = {}
 
 function M.get(multiplexerType)
-    local iTerm = require("server.terminal.iTerm")
+    local iTerm = require("fksserver.terminal.iTerm")
 
     terminal = iTerm.setupIfAvailable(multiplexerType)
     if terminal ~= nil then

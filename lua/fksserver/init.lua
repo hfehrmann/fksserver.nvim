@@ -3,15 +3,12 @@ local M = {}
 
 function M.setup(opts)
     local default_opts = {
-        socket_name = "nvim_server",
+        socket_name = "fks_nvim_server",
     }
     local options = vim.tbl_deep_extend("force", default_opts, opts or {})
     local socket_name = options.socket_name
     local sock_format = "/tmp/%s.sock"
     local socket = sock_format:format(socket_name)
-
-    local focus = require('server.focus')
-    focus.setup()
 
     M.opts = {
         socket = socket,
@@ -21,12 +18,13 @@ function M.setup(opts)
 end
 
 function register_cmd()
-    local focus = require('server.focus')
+    local focus = require("fksserver.focus")
     local sock = M.opts.socket
 
     vim.api.nvim_create_user_command(
-        "ServerStart",
+        "FKSServerStart",
         function()
+            focus.setup()
             vim.fn.system(
                 "nvim --headless --server " .. sock .. " --remote-send \"<C-\\><C-N>: ServerStop<CR><C-\\><C-N>\""
             )
@@ -41,7 +39,7 @@ function register_cmd()
         {}
     )
     vim.api.nvim_create_user_command(
-        "ServerStop",
+        "FKSServerStop",
         function()
             vim.fn.call(
                 "serverstop",
@@ -52,7 +50,7 @@ function register_cmd()
         {}
     )
     vim.api.nvim_create_user_command(
-        "ServerFocusMe",
+        "FKSFocusMe",
         function()
             focus.focus()
         end,

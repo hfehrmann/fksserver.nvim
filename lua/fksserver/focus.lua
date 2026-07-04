@@ -15,7 +15,7 @@ function M.setup()
         return
     end
 
-    local terminalModule = require("server.terminal")
+    local terminalModule = require("fksserver.terminal")
     local terminal = terminalModule.setup()
 
     M.terminal = terminal
