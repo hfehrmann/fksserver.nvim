@@ -11,7 +11,18 @@ function M.setup(opts)
     local options = vim.tbl_deep_extend("force", default_opts, opts or {})
     local socket_name = options.socket_name
     local sock_format = "/tmp/%s.sock"
-    local sock = sock_format:format(socket_name)
+    local socket = sock_format:format(socket_name)
+
+    M.opts = {
+        socket = socket,
+    }
+
+    register_cmd()
+end
+
+function register_cmd()
+    local focus = require('server.focus')
+    local sock = M.opts.socket
 
     vim.api.nvim_create_user_command(
         "ServerStart",
@@ -29,7 +40,6 @@ function M.setup(opts)
         end,
         {}
     )
-
     vim.api.nvim_create_user_command(
         "ServerStop",
         function()
@@ -41,7 +51,6 @@ function M.setup(opts)
         end,
         {}
     )
-
     vim.api.nvim_create_user_command(
         "ServerFocusMe",
         function()

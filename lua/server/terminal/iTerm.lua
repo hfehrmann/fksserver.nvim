@@ -2,10 +2,11 @@
 iTermFocus = {}
 iTermFocus.__index = iTermFocus
 
-function iTermFocus:new(sessionId)
+function iTermFocus:new(sessionId, multiplexer)
     local o = {}
     setmetatable(o, self)
     self.sessionId = sessionId
+    self.multiplexer = multiplexer
     return o
 end
 
@@ -33,6 +34,10 @@ function iTermFocus:focus()
     )
     local cmd = "osascript -e " .. vim.fn.shellescape(script)
     local out = vim.fn.system(cmd)
+
+    if self.multiplexer then
+        self.multiplexer:focus()
+    end
 end
 
 function iTermFocus.setup(FOCUS, sessionId)
@@ -44,7 +49,9 @@ function iTermFocus.setup(FOCUS, sessionId)
         realSessionId = sessionId
     end
 
-    FOCUS.terminal = iTermFocus:new(realSessionId)
+    local multiplexer = require("server.multiplexer.tmux")
+
+    FOCUS.terminal = iTermFocus:new(realSessionId, multiplexer.setup())
 end
 
 return iTermFocus
