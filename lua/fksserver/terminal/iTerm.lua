@@ -38,8 +38,7 @@ function iTerm:focus()
         ]],
         self.sessionId
     )
-    local cmd = "osascript -e " .. vim.fn.shellescape(script)
-    local out = vim.fn.system(cmd)
+    vim.system({"osascript", "-e", script}, function() end)
 end
 
 function iTerm.setupIfAvailable(multiplexerType)
