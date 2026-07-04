@@ -13,6 +13,8 @@ function M.setup(opts)
     M.opts = {
         socket = socket,
     }
+    local focus = require("fksserver.focus")
+    focus.setup()
 
     register_cmd()
 end
@@ -26,7 +28,7 @@ function register_cmd()
         function()
             focus.setup()
             vim.fn.system(
-                "nvim --headless --server " .. sock .. " --remote-send \"<C-\\><C-N>: ServerStop<CR><C-\\><C-N>\""
+                "nvim --headless --server " .. sock .. " --remote-send \"<C-\\><C-N>:FKSServerStop<CR><C-\\><C-N>\""
             )
             vim.defer_fn(function()
                 vim.fn.call(
