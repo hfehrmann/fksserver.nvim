@@ -2,9 +2,6 @@
 local M = {}
 
 function M.setup(opts)
-    local focus = require('server.focus')
-    focus.setup()
-
     local default_opts = {
         socket_name = "nvim_server",
     }
@@ -12,6 +9,9 @@ function M.setup(opts)
     local socket_name = options.socket_name
     local sock_format = "/tmp/%s.sock"
     local socket = sock_format:format(socket_name)
+
+    local focus = require('server.focus')
+    focus.setup()
 
     M.opts = {
         socket = socket,

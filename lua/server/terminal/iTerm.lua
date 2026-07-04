@@ -17,11 +17,11 @@ function iTerm:focus()
                 set tabIndex to 0
                 repeat with t in tabs of w
                     set tabIndex to tabIndex + 1
-                    repeat with s in sessions of t
-                        set ids to unique id of s
-                        if (id of s) is "%s" then
+                    repeat with ses in sessions of t
+                        if (id of ses) is "%s" then
                             activate
                             select tab tabIndex of w
+                            select ses
                             return
                         end if
                     end repeat
@@ -39,7 +39,13 @@ function iTerm.setupIfAvailable(multiplexerType)
     local sessionId = ""
 
     if multiplexerType == "tmux" then
+        local result = vim.fn.system("tmux showenv ITERM_SESSION_ID")
+        if result:sub(1, 1) == "-" then
+            return nil
+        end
 
+        local index = result:find("=")
+        sessionId = result:sub(index + 1):gsub("%s+", "")
     else
         sessionId = vim.env.ITERM_SESSION_ID or ""
         if sessionId == "" then
