@@ -1,6 +1,33 @@
+---@toc fksserver.content
+---@mod fksserver Introduction
+---@brief [[
+---Focus server for nvim.
+---
+---This plugin creates socket server for nvim. It also provides focusing commands
+---that will bring the main Neovim instance to the front of the screen. The
+---|fksnv| tool provides a better UX to opening files and focusing into the server.
+---
+---You can use the socket to send request to the instance directly.
+---
+---Currently supported OS and terminals:
+---
+---- MacOS:
+---  - iTerm
+---    - tmux
+---@brief ]]
 
 local M = {}
 
+---Setup fksserver
+---@param opts table|nil
+---
+---All values are optional with below default values. User defined keys
+---take preference
+---@usage lua [[
+---require("fksserver").setup({
+---  socket_name = "fks_nvim_server" -- Used by `fksnv` tool. Use -s option to override
+---})
+---@usage ]]
 function M.setup(opts)
     local default_opts = {
         socket_name = "fks_nvim_server",
@@ -14,73 +41,10 @@ function M.setup(opts)
         socket = socket,
     }
     local focus = require("fksserver.focus")
+    local commands = require("fksserver.commands")
     focus.setup()
 
-    register_cmd()
-end
-
-function register_cmd()
-    local focus = require("fksserver.focus")
-    local fksnv = require("fksserver.fksnv")
-    local sock = M.opts.socket
-
-    vim.api.nvim_create_user_command(
-        "FKSServerStart",
-        function()
-            focus.setup()
-            vim.fn.system(
-                "nvim --headless --server " .. sock .. " --remote-send \"<C-\\><C-N>:FKSServerStop<CR><C-\\><C-N>\""
-            )
-            vim.defer_fn(function()
-                vim.fn.call(
-                    "serverstart",
-                    { sock }
-                )
-                fksnv.check()
-                io.stderr:write("\27]0;Main nvim\007")
-            end, 500)
-        end,
-        {}
-    )
-    vim.api.nvim_create_user_command(
-        "FKSServerStop",
-        function()
-            vim.fn.call(
-                "serverstop",
-                { sock }
-            )
-            io.stderr:write("\27]0;nvim\007")
-        end,
-        {}
-    )
-    vim.api.nvim_create_user_command(
-        "FKSFocusMe",
-        function()
-            focus.focus()
-        end,
-        {}
-    )
-    vim.api.nvim_create_user_command(
-        "FKSOpen",
-        function(opts)
-            local file = vim.fn.fnamemodify(opts.args, ":p")
-            local pwd = vim.fn.getcwd() .. "/"
-
-            if file:sub(1, #pwd) == pwd then
-                file = file:sub(#pwd + 1)
-            end
-
-            vim.cmd("edit " .. file)
-        end,
-        { nargs = 1 }
-    )
-    vim.api.nvim_create_user_command(
-        "FKSInstall",
-        function(opts)
-            fksnv.install()
-        end,
-        {}
-    )
+    commands.register_cmd(M.opts)
 end
 
 return M

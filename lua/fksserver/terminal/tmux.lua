@@ -1,15 +1,20 @@
+---@mod  fksserver.terminal.tmux Tmux
 
-Tmux = {}
-Tmux.__index = Tmux
+---Represents a tmux terminal.
+---@class Tmux : MultiplexerTerminal
+T = {}
+T.__index = T
 
-function Tmux:new(paneId)
+---@nodoc
+function T:new(paneId)
     local o = {}
     setmetatable(o, self)
     self.paneId = paneId
     return o
 end
 
-function Tmux:focus()
+---@nodoc
+function T:focus()
 
     local window_script = string.format(
         [[
@@ -35,14 +40,16 @@ function Tmux:focus()
     end
 end
 
-function Tmux.setupIfAvailable()
+---Tries to generate a tmux terminal if the environment supports it
+---@return Tmux|nil
+function T.generateIfAvailable()
     local paneId = vim.env.TMUX_PANE
 
     if paneId then
-        return Tmux:new(paneId)
+        return T:new(paneId)
     else
         return nil
     end
 end
 
-return Tmux
+return T

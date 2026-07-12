@@ -1,15 +1,28 @@
+---@mod fksserver.terminal.hostingTerminal Hosting Terminal
+--@brief [[
+--This module gets the *Terminal* kinds that are native.
+--@biref ]]
 
 local M = {}
 
+
+---Represent the supported Multiplexer types
+---@alias MutliplexerType
+---| '"tmux"' # tmux multiplexer
+---| '"none"' # no multiplexer
+
+---Return the current hosting terminal
+---@param multiplexerType MultiplexerType The multiplexer type that wants to
+---access the host terminal
+---@return HostingTerminal|nil
 function M.get(multiplexerType)
     local iTerm = require("fksserver.terminal.iTerm")
 
-    terminal = iTerm.setupIfAvailable(multiplexerType)
+    terminal = iTerm.generateIfAvailable(multiplexerType)
     if terminal ~= nil then
         return terminal
     end
 
-    vim.notify("The hosting terminal is not supported", vim.log.levels.ERROR)
     return nil
 end
 

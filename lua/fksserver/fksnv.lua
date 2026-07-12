@@ -1,11 +1,24 @@
+---@mod fksserver.fksnv fksnv
+---@tag fksnv
+---@brief [[
+---This module checks if the `fksnv` command is installed in the system and provides
+---functions for installing it.
+---
+---Check `fksnv -h` for more information
+---@brief ]]
+
 local M = {}
 
 local FKSNV_PATH = "/usr/local/bin/fksnv"
 
+---Checks if `fksnv` comamnd is availabble in the shell
+---@return boolean
 function M.exists()
     return vim.fn.executable("fksnv") == 1
 end
 
+---Checks if `fksnv` command is availabble, and prints a warning if not
+---@return void
 function M.check()
     local exists = M.exists()
     if not exists then
@@ -13,6 +26,8 @@ function M.check()
     end
 end
 
+---Installs the *fksnv* command into /usr/local/bin. This needs sudo access
+---@return void
 function M.install()
     local scripts_folders = vim.api.nvim_get_runtime_file("scripts/", true)
 

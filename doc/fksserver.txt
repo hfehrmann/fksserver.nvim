@@ -1,0 +1,194 @@
+==============================================================================
+Table of Contents                                            *fksserver.content*
+
+Introduction ······················································· |fksserver|
+Focus ························································ |fksserver.focus|
+Commands ················································· |fksserrver.commands|
+fksnv ························································ |fksserver.fksnv|
+Terminal ·················································· |fksserver.terminal|
+Hosting Terminal ·························· |fksserver.terminal.hostingTerminal|
+iTerm ··············································· |fksserver.terminal.iTerm|
+Tmux ················································· |fksserver.terminal.tmux|
+
+==============================================================================
+Introduction                                                         *fksserver*
+
+Focus server for nvim.
+
+This plugin creates socket server for nvim. It also provides focusing commands
+that will bring the main Neovim instance to the front of the screen. The
+|fksnv| tool provides a better UX to opening files and focusing into the server.
+
+You can use the socket to send request to the instance directly.
+
+Currently supported OS and terminals:
+
+- MacOS:
+  - iTerm
+    - tmux
+
+M.setup({opts})                                                *fksserver.setup*
+  Setup fksserver
+
+  Parameters: ~
+    {opts}  (table|nil)
+            All values are optional with below default values. User defined keys
+            take preference
+
+  Usage: ~
+>lua
+    require("fksserver").setup({
+      socket_name = "fks_nvim_server" -- Used by `fksnv` tool. Use -s option to override
+    })
+<
+
+
+==============================================================================
+Focus                                                          *fksserver.focus*
+
+This module identifies the current OS and terminal environment where the
+server is running. The focus command is environment dependent
+
+M.setup()                                                *fksserver.focus.setup*
+  Setup the focus envirnoment, querying env data to determine where the
+  current Neovim instance is running.
+
+  Reports a warning when it is not able to create a focus environemnt
+
+
+M.focus()                                                *fksserver.focus.focus*
+  Executes the focus command for the identified terminal mode. This method
+  requires a call to `M.setup()` to work.
+
+
+==============================================================================
+Commands                                                   *fksserrver.commands*
+
+Register all the commands for fksserver
+
+ Command          Description
+ ======================================================================
+ *FKSServerStart*  Starts the server in the current instance
+
+ *FKSServerStop*   Stops any server running
+
+ *FKSFocusMe*      Brings the Neovim server into the front, across OS and
+                  terminal windows
+
+ *FKSOpen*         Open file command
+
+ *FKSInstall*      Install fksnv tool into the OS system
+
+M.register_cmd()                              *fksserrver.commands.register_cmd*
+  Register Neovim commands
+
+
+==============================================================================
+fksnv                                                          *fksserver.fksnv*
+
+                                                                         *fksnv*
+This module checks if the `fksnv` command is installed in the system and provides
+functions for installing it.
+
+Check `fksnv -h` for more information
+
+M.exists()                                              *fksserver.fksnv.exists*
+  Checks if `fksnv` comamnd is availabble in the shell
+
+  Returns: ~
+    (boolean)
+
+
+M.check()                                                *fksserver.fksnv.check*
+  Checks if `fksnv` command is availabble, and prints a warning if not
+
+  Returns: ~
+    (void)
+
+
+M.install()                                            *fksserver.fksnv.install*
+  Installs the *fksnv* command into /usr/local/bin. This needs sudo access
+
+  Returns: ~
+    (void)
+
+
+==============================================================================
+Terminal                                                    *fksserver.terminal*
+
+Terminal                                           *fksserver.terminal.Terminal*
+  Abstract class that represents a terminal
+
+
+HostingTerminal : Terminal                  *fksserver.terminal.HostingTerminal*
+  Represents a vanilla terminal
+
+
+MultiplexerTerminal : Terminal          *fksserver.terminal.MultiplexerTerminal*
+  Represents a multiplexer terminal. There could be a `HostingTerminal` running
+  under the hood
+
+
+M.setup()                                             *fksserver.terminal.setup*
+  Tries to identify the current `Terminal` type that is running
+
+  Returns: ~
+    (Terminal|nil)
+
+
+==============================================================================
+Hosting Terminal                            *fksserver.terminal.hostingTerminal*
+
+MutliplexerType             *fksserver.terminal.hostingTerminal.MutliplexerType*
+  Represent the supported Multiplexer types
+
+  Variants: ~
+    ("tmux")  tmux multiplexer
+    ("none")  no multiplexer
+
+
+M.get({multiplexerType})                *fksserver.terminal.hostingTerminal.get*
+  Return the current hosting terminal
+
+  Parameters: ~
+    {multiplexerType}  (MultiplexerType) The multiplexer type that wants to
+                       access the host terminal
+
+  Returns: ~
+    (HostingTerminal|nil)
+
+
+==============================================================================
+iTerm                                                 *fksserver.terminal.iTerm*
+
+iTerm : HostingTerminal                         *fksserver.terminal.iTerm.iTerm*
+  Represents an iTerm terminal
+
+
+                                  *fksserver.terminal.iTerm.generateIfAvailable*
+T.generateIfAvailable({multiplexerType})
+  Tries to generate an iTerm terminal if the environment supports it. It might
+  be running a multiplexer, so it needs to be aware of the kind
+
+  Parameters: ~
+    {multiplexerType}  (MutliplexerType) the type of the running multiplexer
+
+  Returns: ~
+    (iTerm|nil)
+
+
+==============================================================================
+Tmux                                                   *fksserver.terminal.tmux*
+
+Tmux : MultiplexerTerminal                        *fksserver.terminal.tmux.Tmux*
+  Represents a tmux terminal.
+
+
+T.generateIfAvailable()            *fksserver.terminal.tmux.generateIfAvailable*
+  Tries to generate a tmux terminal if the environment supports it
+
+  Returns: ~
+    (Tmux|nil)
+
+
+vim:tw=78:ts=8:noet:ft=help:norl:

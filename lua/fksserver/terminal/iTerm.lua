@@ -1,15 +1,20 @@
+---@mod fksserver.terminal.iTerm iTerm
 
-iTerm = {}
-iTerm.__index = iTerm
+---Represents an iTerm terminal
+---@class iTerm: HostingTerminal
+T = {}
+T.__index = T
 
-function iTerm:new(sessionId)
+---@nodoc
+function T:new(sessionId)
     local o = {}
     setmetatable(o, self)
     self.sessionId = sessionId
     return o
 end
 
-function iTerm:focus()
+---@nodoc
+function T:focus()
     local script = string.format(
         [[
         tell application "iTerm"
@@ -41,7 +46,12 @@ function iTerm:focus()
     vim.system({"osascript", "-e", script}, function() end)
 end
 
-function iTerm.setupIfAvailable(multiplexerType)
+
+---Tries to generate an iTerm terminal if the environment supports it. It might
+---be running a multiplexer, so it needs to be aware of the kind
+---@param multiplexerType MutliplexerType the type of the running multiplexer
+---@return iTerm|nil
+function T.generateIfAvailable(multiplexerType)
     local sessionId = ""
 
     if multiplexerType == "tmux" then
@@ -67,7 +77,7 @@ function iTerm.setupIfAvailable(multiplexerType)
         realSessionId = sessionId
     end
 
-    return iTerm:new(realSessionId)
+    return T:new(realSessionId)
 end
 
-return iTerm
+return T
