@@ -27,11 +27,11 @@ function commands.register_cmd(opts)
     vim.api.nvim_create_user_command(
         "FKSServerStart",
         function()
-            commands.terminal = focus.setup()
             vim.fn.system(
                 "nvim --headless --server " .. sock .. " --remote-send \"<C-\\><C-N>:FKSServerStop<CR><C-\\><C-N>\""
             )
             vim.defer_fn(function()
+                commands.terminal = focus.setup()
                 vim.fn.call(
                     "serverstart",
                     { sock }

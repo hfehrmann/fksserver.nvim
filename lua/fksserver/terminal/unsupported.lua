@@ -12,6 +12,7 @@ end
 
 ---@nodoc
 function T:focus()
+    self:report_unsupported()
 end
 
 function T:report_unsupported()
