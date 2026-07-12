@@ -74,5 +74,5 @@ fi
 
 COMMAND="<C-\\><C-N>${FOCUS}${JOINED_OPEN_FILES}"
 
-nvim --headless --server $SOCKET --remote-send $COMMAND
+nvim --headless --server "$SOCKET" --remote-send "$COMMAND"
 
