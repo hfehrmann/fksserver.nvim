@@ -7,7 +7,10 @@ usage() {
     echo ""
     echo "Usage: fksnv [-o] file [...]"
     echo "Options:"
-    echo "  -o    Only open the file, no focus."
+    echo "  -h    Show this help."
+    echo "  -o    Only open the files, no focus."
+    echo "  -s    Change the nvim socket to send the commands (default: fks_nvim_server)."
+    echo "  -v    Shows the version."
     exit 0
 }
 
@@ -17,14 +20,18 @@ version() {
 }
 
 FOCUS=":FKSFocusMe<CR>"
+SOCKET_NAME="fks_nvim_server"
 
-while getopts "ohv" opt; do
+while getopts "hos:v" opt; do
     case $opt in
+        h)
+            usage
+            ;;
         o)
             FOCUS=""
             ;;
-        h)
-            usage
+        s)
+            SOCKET_NAME="$OPTARG"
             ;;
         v)
             version
@@ -52,13 +59,14 @@ for ARG in "$@" ; do
     OPEN_FILES+=(":FKSOpen $FILE<CR>")
 done
 
-if [ "${#OPEN_FILES[@]}" -eq 0 ]; then
+if [ "${#OPEN_FILES[@]}" -eq 0 -a -z "$FOCUS" ]; then
+    echo "fksnv: No focus and no files given" >&2
     exit 1
 fi
 
 JOINED_OPEN_FILES=$(IFS="" && echo "${OPEN_FILES[*]}")
 
-SOCKET="/tmp/fks_nvim_server.sock"
+SOCKET="/tmp/$SOCKET_NAME.sock"
 if [[ ! -e $SOCKET ]]; then
     echo "fksnv: There is no fks server running. Please start one" >&2
     exit 1
