@@ -6,7 +6,7 @@ Focus ·····································
 Commands ················································· |fksserrver.commands|
 fksnv ························································ |fksserver.fksnv|
 Terminal ·················································· |fksserver.terminal|
-Hosting Terminal ·························· |fksserver.terminal.hostingTerminal|
+Hosting Terminal ·································· |fksserver.terminal.hosting|
 iTerm ··············································· |fksserver.terminal.iTerm|
 Tmux ················································· |fksserver.terminal.tmux|
 
@@ -27,7 +27,7 @@ Currently supported OS and terminals:
   - iTerm
     - tmux
 
-M.setup({opts})                                                *fksserver.setup*
+fksserver.setup({opts})                                        *fksserver.setup*
   Setup fksserver
 
   Parameters: ~
@@ -49,16 +49,14 @@ Focus                                                          *fksserver.focus*
 This module identifies the current OS and terminal environment where the
 server is running. The focus command is environment dependent
 
-M.setup()                                                *fksserver.focus.setup*
+focus.setup()                                            *fksserver.focus.setup*
   Setup the focus envirnoment, querying env data to determine where the
   current Neovim instance is running.
 
   Reports a warning when it is not able to create a focus environemnt
 
-
-M.focus()                                                *fksserver.focus.focus*
-  Executes the focus command for the identified terminal mode. This method
-  requires a call to `M.setup()` to work.
+  Returns: ~
+    (Terminal)
 
 
 ==============================================================================
@@ -68,18 +66,18 @@ Register all the commands for fksserver
 
  Command          Description
  ======================================================================
- *FKSServerStart*  Starts the server in the current instance
+ *:FKSServerStart*  Starts the server in the current instance
 
- *FKSServerStop*   Stops any server running
+ *:FKSServerStop*   Stops any server running
 
- *FKSFocusMe*      Brings the Neovim server into the front, across OS and
+ *:FKSFocusMe*      Brings the Neovim server into the front, across OS and
                   terminal windows
 
- *FKSOpen*         Open file command
+ *:FKSOpen*         Open file command
 
- *FKSInstall*      Install fksnv tool into the OS system
+ *:FKSInstall*      Install fksnv tool into the OS system
 
-M.register_cmd()                              *fksserrver.commands.register_cmd*
+commands.register_cmd()                       *fksserrver.commands.register_cmd*
   Register Neovim commands
 
 
@@ -92,22 +90,22 @@ functions for installing it.
 
 Check `fksnv -h` for more information
 
-M.exists()                                              *fksserver.fksnv.exists*
+fksnv.exists()                                          *fksserver.fksnv.exists*
   Checks if `fksnv` comamnd is availabble in the shell
 
   Returns: ~
     (boolean)
 
 
-M.check()                                                *fksserver.fksnv.check*
+fksnv.check()                                            *fksserver.fksnv.check*
   Checks if `fksnv` command is availabble, and prints a warning if not
 
   Returns: ~
     (void)
 
 
-M.install()                                            *fksserver.fksnv.install*
-  Installs the *fksnv* command into /usr/local/bin. This needs sudo access
+fksnv.install()                                        *fksserver.fksnv.install*
+  Installs the |fksnv| command into /usr/local/bin. This needs sudo access
 
   Returns: ~
     (void)
@@ -120,6 +118,10 @@ Terminal                                           *fksserver.terminal.Terminal*
   Abstract class that represents a terminal
 
 
+terminal.Terminal:focus()                    *fksserver.terminal.Terminal:focus*
+  Executes the focus operation for the terminal
+
+
 HostingTerminal : Terminal                  *fksserver.terminal.HostingTerminal*
   Represents a vanilla terminal
 
@@ -129,7 +131,7 @@ MultiplexerTerminal : Terminal          *fksserver.terminal.MultiplexerTerminal*
   under the hood
 
 
-M.setup()                                             *fksserver.terminal.setup*
+terminal.setup()                                      *fksserver.terminal.setup*
   Tries to identify the current `Terminal` type that is running
 
   Returns: ~
@@ -137,9 +139,9 @@ M.setup()                                             *fksserver.terminal.setup*
 
 
 ==============================================================================
-Hosting Terminal                            *fksserver.terminal.hostingTerminal*
+Hosting Terminal                                    *fksserver.terminal.hosting*
 
-MutliplexerType             *fksserver.terminal.hostingTerminal.MutliplexerType*
+MutliplexerType                     *fksserver.terminal.hosting.MutliplexerType*
   Represent the supported Multiplexer types
 
   Variants: ~
@@ -147,7 +149,7 @@ MutliplexerType             *fksserver.terminal.hostingTerminal.MutliplexerType*
     ("none")  no multiplexer
 
 
-M.get({multiplexerType})                *fksserver.terminal.hostingTerminal.get*
+hosting.get({multiplexerType})                  *fksserver.terminal.hosting.get*
   Return the current hosting terminal
 
   Parameters: ~

@@ -33,7 +33,7 @@ function T:focus()
     )
     vim.fn.system(focus_script)
 
-    local hostingTerminal = require("fksserver.terminal.hostingTerminal")
+    local hostingTerminal = require("fksserver.terminal.hosting")
     local terminal = hostingTerminal.get("tmux")
     if terminal then
         terminal:focus()

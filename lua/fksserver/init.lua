@@ -16,7 +16,7 @@
 ---    - tmux
 ---@brief ]]
 
-local M = {}
+local fksserver = {}
 
 ---Setup fksserver
 ---@param opts table|nil
@@ -28,7 +28,7 @@ local M = {}
 ---  socket_name = "fks_nvim_server" -- Used by `fksnv` tool. Use -s option to override
 ---})
 ---@usage ]]
-function M.setup(opts)
+function fksserver.setup(opts)
     local default_opts = {
         socket_name = "fks_nvim_server",
     }
@@ -37,14 +37,12 @@ function M.setup(opts)
     local sock_format = "/tmp/%s.sock"
     local socket = sock_format:format(socket_name)
 
-    M.opts = {
+    fksserver.opts = {
         socket = socket,
     }
-    local focus = require("fksserver.focus")
     local commands = require("fksserver.commands")
-    focus.setup()
 
-    commands.register_cmd(M.opts)
+    commands.register_cmd(fksserver.opts)
 end
 
-return M
+return fksserver

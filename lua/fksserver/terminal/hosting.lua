@@ -1,9 +1,9 @@
----@mod fksserver.terminal.hostingTerminal Hosting Terminal
+---@mod fksserver.terminal.hosting Hosting Terminal
 --@brief [[
 --This module gets the *Terminal* kinds that are native.
 --@biref ]]
 
-local M = {}
+local hosting = {}
 
 
 ---Represent the supported Multiplexer types
@@ -15,7 +15,7 @@ local M = {}
 ---@param multiplexerType MultiplexerType The multiplexer type that wants to
 ---access the host terminal
 ---@return HostingTerminal|nil
-function M.get(multiplexerType)
+function hosting.get(multiplexerType)
     local iTerm = require("fksserver.terminal.iTerm")
 
     terminal = iTerm.generateIfAvailable(multiplexerType)
@@ -26,4 +26,4 @@ function M.get(multiplexerType)
     return nil
 end
 
-return M
+return hosting
