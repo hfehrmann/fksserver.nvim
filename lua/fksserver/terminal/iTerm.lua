@@ -61,6 +61,12 @@ function T.generateIfAvailable(multiplexerType)
         end
 
         local index = result:find("=")
+        if index == nil then
+            vim.notify(
+                "iTerm + tmux detected, but env misconfigured. Check your system.",
+                vim.log.levels.WARN
+            )
+        end
         sessionId = result:sub(index + 1):gsub("%s+", "")
     else
         sessionId = vim.env.ITERM_SESSION_ID or ""

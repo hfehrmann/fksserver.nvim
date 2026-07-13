@@ -14,6 +14,8 @@
 ---- MacOS:
 ---  - iTerm
 ---    - tmux
+---  - Terminal
+---    - tmux
 ---@brief ]]
 
 local fksserver = {}

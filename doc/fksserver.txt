@@ -8,6 +8,7 @@ fksnv ·····································
 Terminal ·················································· |fksserver.terminal|
 Hosting Terminal ·································· |fksserver.terminal.hosting|
 iTerm ··············································· |fksserver.terminal.iTerm|
+Mac Terminal ·································· |fksserver.terminal.macTerminal|
 Tmux ················································· |fksserver.terminal.tmux|
 
 ==============================================================================
@@ -25,6 +26,8 @@ Currently supported OS and terminals:
 
 - MacOS:
   - iTerm
+    - tmux
+  - Terminal
     - tmux
 
 fksserver.setup({opts})                                        *fksserver.setup*
@@ -177,6 +180,25 @@ T.generateIfAvailable({multiplexerType})
 
   Returns: ~
     (iTerm|nil)
+
+
+==============================================================================
+Mac Terminal                                    *fksserver.terminal.macTerminal*
+
+MacTerminal : HostingTerminal       *fksserver.terminal.macTerminal.MacTerminal*
+  Represents an MacTerminal terminal
+
+
+                            *fksserver.terminal.macTerminal.generateIfAvailable*
+T.generateIfAvailable({multiplexerType})
+  Tries to generate a Mac Terminal terminal if the environment supports it.
+  It might be running a multiplexer, so it needs to be aware of the kind
+
+  Parameters: ~
+    {multiplexerType}  (MutliplexerType) the type of the running multiplexer
+
+  Returns: ~
+    (MacTerminal|nil)
 
 
 ==============================================================================

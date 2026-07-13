@@ -17,8 +17,14 @@ local hosting = {}
 ---@return HostingTerminal|nil
 function hosting.get(multiplexerType)
     local iTerm = require("fksserver.terminal.iTerm")
+    local macTerminal = require("fksserver.terminal.macTerminal")
 
     terminal = iTerm.generateIfAvailable(multiplexerType)
+    if terminal ~= nil then
+        return terminal
+    end
+
+    terminal = macTerminal.generateIfAvailable(multiplexerType)
     if terminal ~= nil then
         return terminal
     end
