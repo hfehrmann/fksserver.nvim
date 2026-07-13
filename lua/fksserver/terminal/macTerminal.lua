@@ -1,6 +1,25 @@
 ---@mod fksserver.terminal.macTerminal Mac Terminal
+---@brief [[
+---fksserver uses TERM_SESSION_ID to identify if we are in the Terminal app
+---
+---The system needs the following configuration in order for the focus server to
+---work
+---
+---# Vanilla Terminal
+---
+---.rc file:
+---export FKSSERVER_TTY=`tty`
+---
+---# Tmux
+---
+---The configuration for the base terminal, plus the following in your .tmux.conf
+---
+---.tmux.conf:
+---set-option -ga update-environment "TERM_SESSION_ID"
+---set-option -ga update-environment "FKSSERVER_TTY"
+---@brief ]]
 
----Represents an MacTerminal terminal
+---Represents a MacTerminal terminal
 ---@class MacTerminal: HostingTerminal
 T = {}
 T.__index = T

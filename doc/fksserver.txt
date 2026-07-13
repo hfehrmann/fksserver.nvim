@@ -166,6 +166,22 @@ hosting.get({multiplexerType})                  *fksserver.terminal.hosting.get*
 ==============================================================================
 iTerm                                                 *fksserver.terminal.iTerm*
 
+fksserver uses ITERM_SESSION_ID to identify if we are in the iTerm app
+
+The system needs the following configuration in order for the focus server to
+work
+
+# Vanilla Terminal
+
+This will work out of the box
+
+# Tmux
+
+The configuration for the base terminal, plus the following in your .tmux.conf
+
+.tmux.conf:
+set-option -ga update-environment "ITERM_SESSION_ID"
+
 iTerm : HostingTerminal                         *fksserver.terminal.iTerm.iTerm*
   Represents an iTerm terminal
 
@@ -185,8 +201,26 @@ T.generateIfAvailable({multiplexerType})
 ==============================================================================
 Mac Terminal                                    *fksserver.terminal.macTerminal*
 
+fksserver uses TERM_SESSION_ID to identify if we are in the Terminal app
+
+The system needs the following configuration in order for the focus server to
+work
+
+# Vanilla Terminal
+
+.rc file:
+export FKSSERVER_TTY=`tty`
+
+# Tmux
+
+The configuration for the base terminal, plus the following in your .tmux.conf
+
+.tmux.conf:
+set-option -ga update-environment "TERM_SESSION_ID"
+set-option -ga update-environment "FKSSERVER_TTY"
+
 MacTerminal : HostingTerminal       *fksserver.terminal.macTerminal.MacTerminal*
-  Represents an MacTerminal terminal
+  Represents a MacTerminal terminal
 
 
                             *fksserver.terminal.macTerminal.generateIfAvailable*

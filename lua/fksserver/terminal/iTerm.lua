@@ -1,4 +1,21 @@
 ---@mod fksserver.terminal.iTerm iTerm
+---@brief [[
+---fksserver uses ITERM_SESSION_ID to identify if we are in the iTerm app
+---
+---The system needs the following configuration in order for the focus server to
+---work
+---
+---# Vanilla Terminal
+---
+---This will work out of the box
+---
+---# Tmux
+---
+---The configuration for the base terminal, plus the following in your .tmux.conf
+---
+---.tmux.conf:
+---set-option -ga update-environment "ITERM_SESSION_ID"
+---@brief ]]
 
 ---Represents an iTerm terminal
 ---@class iTerm: HostingTerminal
