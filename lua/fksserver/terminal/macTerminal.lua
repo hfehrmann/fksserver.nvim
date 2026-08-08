@@ -25,6 +25,7 @@ T = {}
 T.__index = T
 
 ---@nodoc
+---@private
 function T:new(tty)
     local o = {}
     setmetatable(o, self)
@@ -33,6 +34,7 @@ function T:new(tty)
 end
 
 ---@nodoc
+---@private
 function T:focus()
     local script = string.format(
         [[

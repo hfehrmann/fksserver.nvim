@@ -144,7 +144,8 @@ terminal.setup()                                      *fksserver.terminal.setup*
 ==============================================================================
 Hosting Terminal                                    *fksserver.terminal.hosting*
 
-MutliplexerType                     *fksserver.terminal.hosting.MutliplexerType*
+                                    *fksserver.terminal.hosting.MutliplexerType*
+MutliplexerType
   Represent the supported Multiplexer types
 
   Variants: ~
@@ -219,7 +220,8 @@ The configuration for the base terminal, plus the following in your .tmux.conf
 set-option -ga update-environment "TERM_SESSION_ID"
 set-option -ga update-environment "FKSSERVER_TTY"
 
-MacTerminal : HostingTerminal       *fksserver.terminal.macTerminal.MacTerminal*
+                                    *fksserver.terminal.macTerminal.MacTerminal*
+MacTerminal : HostingTerminal
   Represents a MacTerminal terminal
 
 
@@ -242,7 +244,8 @@ Tmux : MultiplexerTerminal                        *fksserver.terminal.tmux.Tmux*
   Represents a tmux terminal.
 
 
-T.generateIfAvailable()            *fksserver.terminal.tmux.generateIfAvailable*
+                                   *fksserver.terminal.tmux.generateIfAvailable*
+T.generateIfAvailable()
   Tries to generate a tmux terminal if the environment supports it
 
   Returns: ~

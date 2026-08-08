@@ -6,6 +6,7 @@ T = {}
 T.__index = T
 
 ---@nodoc
+---@private
 function T:new(paneId)
     local o = {}
     setmetatable(o, self)
@@ -14,6 +15,7 @@ function T:new(paneId)
 end
 
 ---@nodoc
+---@private
 function T:focus()
 
     local window_script = string.format(

@@ -1,0 +1,27 @@
+name: Doc validation
+on:
+  push:
+    branch:
+      - dev
+  pull_request:
+
+
+jobs:
+  validate-doc-generation:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: lemmy-help
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Doc generation
+        run: ./scripts/doc_generation.sh
+
+      - name: Docs are up to date
+        uses: CatChen/check-git-status-action@v2
+        with:
+          comment-message: 'You need to update the docs'
+

@@ -4,6 +4,7 @@ T = {}
 T.__index = T
 
 ---@nodoc
+---@private
 function T:new()
     local o = {}
     setmetatable(o, self)
@@ -11,6 +12,7 @@ function T:new()
 end
 
 ---@nodoc
+---@private
 function T:focus()
     self:report_unsupported()
 end

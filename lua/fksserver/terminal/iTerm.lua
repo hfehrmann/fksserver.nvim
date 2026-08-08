@@ -23,6 +23,7 @@ T = {}
 T.__index = T
 
 ---@nodoc
+---@private
 function T:new(sessionId)
     local o = {}
     setmetatable(o, self)
@@ -31,6 +32,7 @@ function T:new(sessionId)
 end
 
 ---@nodoc
+---@private
 function T:focus()
     local script = string.format(
         [[
